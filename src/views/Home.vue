@@ -1,13 +1,13 @@
 <template>
   <Map></Map>
   <div class="content">
-    <Header />
-    <div class="left">
+    <Header></Header>
+    <div v-if="isFocus" class="left">
       <Timeline />
       <LineChart />
       <EquipmentState />
     </div>
-    <div class="right">
+    <div v-if="isFocus" class="right">
       <MinVideo />
       <RadarChart />
       <SonarChart />
@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import Map from '@/components/Map.vue';
 import Header from '@/components/Header.vue';
 import Timeline from '@/components/Timeline.vue';
@@ -24,6 +25,18 @@ import EquipmentState from '@/components/EquipmentState.vue';
 import MinVideo from '@/components/video/MinVideo.vue';
 import RadarChart from '@/components/radar/RadarChart.vue';
 import SonarChart from '@/components/SonarChart.vue';
+
+let timer;
+let isFocus = ref(true);
+// window.addEventListener('mousemove', () => {
+//   if(!isFocus.value) {
+//     isFocus.value = true;
+//   }
+//   clearTimeout(timer);
+//   timer = setTimeout(() => {
+//     isFocus.value = false;
+//   }, 30000);
+// });
 </script>
 
 <style lang="scss" scoped>

@@ -170,17 +170,17 @@ export default defineComponent({
       scene.add(radarGroup);
 
       //点光源
-      var point = new THREE.PointLight(0xadadad);
-      point.position.set(0, 100, 1000); //点光源位置
+      var point = new THREE.PointLight(0xffffff);
+      point.position.set(0, 100, 100); //点光源位置
       // 通过add方法插入场景中，不插入的话，渲染的时候不会获取光源的信息进行光照计算
       scene.add(point); //点光源添加到场景中
       //  环境光
       const light = new THREE.AmbientLight(0xadadad); // soft white light
       scene.add(light);
       // 平行光
-      // const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
-      // directionalLight.position.set(0, 100, 100);
-      // scene.add(directionalLight);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+      directionalLight.position.set(0, 100, 100);
+      scene.add(directionalLight);
 
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
@@ -224,11 +224,11 @@ export default defineComponent({
       //这里用这个构造
       const geometry = new THREE.BufferGeometry()
       let pointArr = [
-        new THREE.Vector3(350, 20, 90),
-        new THREE.Vector3(390, 40, 40),
-        new THREE.Vector3(300, 10, 0),
-        new THREE.Vector3(320, 60, 0),
-        new THREE.Vector3(370, 10, 80)
+        new THREE.Vector3(150, 3, 0),
+        new THREE.Vector3(190, 3, 10),
+        new THREE.Vector3(100, 3, 30),
+        new THREE.Vector3(120, 3, 20),
+        new THREE.Vector3(170, 3, 50)
       ];
       const pointsArray = new THREE.CatmullRomCurve3(pointArr);
       //用这个api传入顶点数组
@@ -239,7 +239,7 @@ export default defineComponent({
       scene.add(mesh)
       // let i = 1;
       // setInterval(() => {
-      //   pointArr.push(new THREE.Vector3(370+i*(Math.random() * 10 -5), 10, 80+i*(Math.random() * 10 -5)))
+      //   pointArr.push(new THREE.Vector3(170+i*(Math.random() * 30), 3, 80+i*(Math.random() * 50 -5)))
       //   mesh.geometry.setFromPoints(new THREE.CatmullRomCurve3([...pointArr]).getPoints(pointArr.length*100))
       // }, 1000);
 

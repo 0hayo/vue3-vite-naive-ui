@@ -1,7 +1,17 @@
 <template>
   <div class="video-box">
-    <div id="divPlugin" class="plugin"></div>
-    <table cellpadding="0" cellspacing="3" border="0" class="control">
+    <input type="button" class="btn top" value="👆" @mousedown="mouseDownPTZControl(1)" @mouseup="mouseUpPTZControl()" />
+    <div class="lvr">
+      <input type="button" class="btn" value="👈" @mousedown="mouseDownPTZControl(3)" @mouseup="mouseUpPTZControl()" />
+      <div id="divPlugin" class="plugin"></div>
+      <input type="button" class="btn" value="👉" @mousedown="mouseDownPTZControl(4)" @mouseup="mouseUpPTZControl()" />
+    </div>
+    <input type="button" class="btn bottom" value="👇" @mousedown="mouseDownPTZControl(2)" @mouseup="mouseUpPTZControl()" />
+    <div class="tb">
+      <input type="button" class="btn" value="+" @mousedown="mouseDownPTZControl(10)" @mouseup="mouseUpPTZControl()" />
+      <input type="button" class="btn" value="-" @mousedown="mouseDownPTZControl(11)" @mouseup="mouseUpPTZControl()" />
+    </div>
+    <!-- <table cellpadding="0" cellspacing="3" border="0" class="control">
       <tr>
         <td>
           <input type="button" class="btn" value="左上" @mousedown="mouseDownPTZControl(5)"
@@ -34,7 +44,7 @@
             @mouseup="mouseUpPTZControl()" />
         </td>
       </tr>
-    </table>
+    </table> -->
   </div>
 </template>
 
@@ -217,17 +227,45 @@ function mouseUpPTZControl() {
 .video-box {
   width: 100%;
   height: 100%;
-  position: relative;
+  // position: relative;
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   .plugin {
     width: 100%;
-    height: 100%;
+    flex: 1;
+    height: 196.6px;
   }
-  .control {
+
+  .lvr {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .tb {
     position: absolute;
-    bottom: 0px;
+    top: 0;
     right: 0;
-    z-index: 99;
+  }
+
+  .btn {
+    outline: none;
+    background: rgba(0,0,0,0.2);
+    color: aliceblue;
+    width: 30px;
+    padding: 0;
+    border: 0;
+    &:active {
+      box-shadow: 0 0 5px rgba(0,0,0,0.5) ;
+    }
+  }
+  .bottom, .top {
+    width: calc(100% - 60px);
+    height: 30px;
   }
 }
 </style>

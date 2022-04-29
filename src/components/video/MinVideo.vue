@@ -17,7 +17,7 @@ export default defineComponent({
   setup() {
     const style = {
       width: "400px",
-      height: "265px"
+      height: "310px"
     };
     return {
       style

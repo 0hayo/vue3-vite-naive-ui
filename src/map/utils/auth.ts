@@ -13,37 +13,37 @@ export const height = 1080;
 
 export const cameraPosition = [0, 400, 600];
 export const createCamera = () => {
-  const camera = new THREE.PerspectiveCamera( 55, width / height, 10, 20000 );
+  const camera = new THREE.PerspectiveCamera(55, width / height, 10, 20000);
   camera.position.set(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
   return camera;
 }
 
 export const createRenderer = () => {
   const renderer = new THREE.WebGLRenderer({
-    antialias:true,
-    alpha:true,
+    antialias: true,
+    alpha: true,
     // logarithmicDepthBuffer: true,
     // precision: 'highp'
   });
-  renderer.setPixelRatio( window.devicePixelRatio );
-  renderer.setSize( width, height );
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(width, height);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   return renderer;
 }
 
 export const cameraControls = [0, 0, 0];
 export const createControls = (camera, renderer) => {
-  const controls = new OrbitControls( camera, renderer.domElement );
+  const controls = new OrbitControls(camera, renderer.domElement);
   //最大仰视角和俯视角
   controls.maxPolarAngle = Math.PI * 0.45;
-  controls.minPolarAngle  = 0;
+  controls.minPolarAngle = 0;
   controls.target.set(cameraControls[0], cameraControls[1], cameraControls[2]);
   controls.minDistance = 50.0;
   controls.maxDistance = 800.0;
   controls.enablePan = false;
   //惯性滑动，滑动大小默认0.25
-  // controls.enableDamping = true;
-  // controls.dampingFactor = 0.1;
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.25;
   // controls.autoRotate = true;
   return controls;
 }
@@ -55,9 +55,9 @@ export const createWater = () => {
     {
       textureWidth: 512,
       textureHeight: 512,
-      waterNormals: new THREE.TextureLoader().load('/assets/waternormals.jpg', function ( texture ) {
+      waterNormals: new THREE.TextureLoader().load('/assets/waternormals.jpg', function (texture) {
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-      } ),
+      }),
       alpha: 1.0,
       sunDirection: new THREE.Vector3(),
       sunColor: 0xffffff,
@@ -73,11 +73,19 @@ export const createWater = () => {
 export const mapLoader = (): any => {
   return new Promise((resovle, reject) => {
     var loader = new GLTFLoader();
-    loader.load('/assets/Dome3.gltf', (obj) => {
+    loader.load('/assets/moxing6.gltf', (obj) => {
       // obj.scene.scale.set(0.1,0.1,0.1);//网格模型缩放
       // obj.children[0].geometry.center();//网格模型的几何体居中
       // obj.children[0].material.color.set(0xffffff);//设置材质颜色
-      obj.scene.position.y = -5;
+      // obj.scene.traverse(function (child) {
+      //   if (child['isMesh']) {
+      //     // child.frustumCulled = false;
+      //     // child.castShadow = true;
+      //     child['material'].emissive = child['material'].color;
+      //     child['material'].emissiveMap = child['material'].map;
+      //   }
+      // });
+      obj.scene.position.y = 2;
       resovle(obj.scene);
     })
   })
@@ -112,11 +120,11 @@ export const createBox = () => {
   return group;
 }
 export const createBoxGeometry = (item) => {
-  const geometry = new THREE.BoxGeometry(item.x,item.y,item.z);
-  const material = new THREE.MeshStandardMaterial( { roughness: 0 } );
-  const mesh = new THREE.Mesh( geometry, material );
-  const position =  item.position;
-  mesh.position.set(position.x,position.y,position.z);
+  const geometry = new THREE.BoxGeometry(item.x, item.y, item.z);
+  const material = new THREE.MeshStandardMaterial({ roughness: 0 });
+  const mesh = new THREE.Mesh(geometry, material);
+  const position = item.position;
+  mesh.position.set(position.x, position.y, position.z);
   mesh['cameraPos'] = item.cameraPos;
   mesh['controlsPos'] = item.controlsPos;
   mesh['callback'] = () => {
@@ -137,33 +145,33 @@ export const animateCamera = (camera, target1, controls, target2, obj) => {
   twFlag = false;
   const current1 = camera.position;
   const current2 = controls.target;
-	var tween = new TWEEN.Tween({
-		x1: current1.x, // 相机当前位置x
-		y1: current1.y, // 相机当前位置y
-		z1: current1.z, // 相机当前位置z
-		x2: current2.x, // 控制当前的中心点x
-		y2: current2.y, // 控制当前的中心点y
-		z2: current2.z // 控制当前的中心点z
-	});
-	tween.to({
-		x1: target1.x, // 新的相机位置x
-		y1: target1.y, // 新的相机位置y
-		z1: target1.z, // 新的相机位置z
-		x2: target2.x, // 新的控制中心点位置x
-		y2: target2.y, // 新的控制中心点位置x
-		z2: target2.z // 新的控制中心点位置x
-	}, obj.time);
-	tween.onUpdate(function(obj) {
-		camera.position.x = obj.x1;
-		camera.position.y = obj.y1;
-		camera.position.z = obj.z1;
-		controls.target.x = obj.x2;
-		controls.target.y = obj.y2;
-		controls.target.z = obj.z2;
-		controls.update();
-	})
-	tween.easing(TWEEN.Easing.Cubic.InOut);
-	tween.start();
+  var tween = new TWEEN.Tween({
+    x1: current1.x, // 相机当前位置x
+    y1: current1.y, // 相机当前位置y
+    z1: current1.z, // 相机当前位置z
+    x2: current2.x, // 控制当前的中心点x
+    y2: current2.y, // 控制当前的中心点y
+    z2: current2.z // 控制当前的中心点z
+  });
+  tween.to({
+    x1: target1.x, // 新的相机位置x
+    y1: target1.y, // 新的相机位置y
+    z1: target1.z, // 新的相机位置z
+    x2: target2.x, // 新的控制中心点位置x
+    y2: target2.y, // 新的控制中心点位置x
+    z2: target2.z // 新的控制中心点位置x
+  }, obj.time);
+  tween.onUpdate(function (obj) {
+    camera.position.x = obj.x1;
+    camera.position.y = obj.y1;
+    camera.position.z = obj.z1;
+    controls.target.x = obj.x2;
+    controls.target.y = obj.y2;
+    controls.target.z = obj.z2;
+    controls.update();
+  })
+  tween.easing(TWEEN.Easing.Cubic.InOut);
+  tween.start();
   tween.onComplete(() => {
     obj.callback && obj.callback();
     twFlag = true;
@@ -177,7 +185,7 @@ function surroundLineGeometry(object) {
 /**
      * 创建包围线条材质
      */
- function createSurroundLineMaterial({
+function createSurroundLineMaterial({
   max,
   min,
   size, time, uStartTime
@@ -186,34 +194,34 @@ function surroundLineGeometry(object) {
   let surroundLineMaterial;
 
   surroundLineMaterial = new THREE.ShaderMaterial({
-      transparent: true,
-      uniforms: {
-          uColor: {
-              value: new THREE.Color("#4C8BF5")
-          },
-          uActive: {
-              value: new THREE.Color("#fff")
-          },
-          time: time,
-          uOpacity: {
-              value: 0.6
-          },
-          uMax: {
-              value: max,
-          },
-          uMin: {
-              value: min,
-          },
-          uRange: {
-              value: 200
-          },
-          uSpeed: {
-              value: 0.2
-          },
-          uStartTime: uStartTime
+    transparent: true,
+    uniforms: {
+      uColor: {
+        value: new THREE.Color("#4C8BF5")
       },
-      vertexShader: Shader.surroundLine.vertexShader,
-      fragmentShader: Shader.surroundLine.fragmentShader
+      uActive: {
+        value: new THREE.Color("#fff")
+      },
+      time: time,
+      uOpacity: {
+        value: 0.6
+      },
+      uMax: {
+        value: max,
+      },
+      uMin: {
+        value: min,
+      },
+      uRange: {
+        value: 200
+      },
+      uSpeed: {
+        value: 0.2
+      },
+      uStartTime: uStartTime
+    },
+    vertexShader: Shader.surroundLine.vertexShader,
+    fragmentShader: Shader.surroundLine.fragmentShader
   });
 
   return surroundLineMaterial;
@@ -222,42 +230,42 @@ function surroundLineGeometry(object) {
 /**
  * 获取包围线条效果
  */
- export const surroundLine = (object, time, uStartTime) => {
-    // 获取线条geometry
-    const geometry = surroundLineGeometry(object);
-    // 获取物体的世界坐标 旋转等
-    const worldPosition = new THREE.Vector3();
-    object.getWorldPosition(worldPosition);
+export const surroundLine = (object, time, uStartTime) => {
+  // 获取线条geometry
+  const geometry = surroundLineGeometry(object);
+  // 获取物体的世界坐标 旋转等
+  const worldPosition = new THREE.Vector3();
+  object.getWorldPosition(worldPosition);
 
-    // 传递给shader重要参数
-    const {
-        max,
-        min
-    } = object.geometry.boundingBox;
+  // 传递给shader重要参数
+  const {
+    max,
+    min
+  } = object.geometry.boundingBox;
 
-    const size = new THREE.Vector3(
-        max.x - min.x,
-        max.y - min.y,
-        max.z - min.z
-    );
+  const size = new THREE.Vector3(
+    max.x - min.x,
+    max.y - min.y,
+    max.z - min.z
+  );
 
-    // this.effectGroup.add();
-    const material = createSurroundLineMaterial({
-        max,
-        min,
-        size, time, uStartTime
-    });
+  // this.effectGroup.add();
+  const material = createSurroundLineMaterial({
+    max,
+    min,
+    size, time, uStartTime
+  });
 
-    const line = new THREE.LineSegments(geometry, material);
+  const line = new THREE.LineSegments(geometry, material);
 
-    line.name = 'surroundLine';
+  line.name = 'surroundLine';
 
-    line.scale.copy(object.scale);
-    line.rotation.copy(object.rotation);
-    line.position.copy(worldPosition);
+  line.scale.copy(object.scale);
+  line.rotation.copy(object.rotation);
+  line.position.copy(worldPosition);
 
-    // this.effectGroup.add(line);
-    return line;
+  // this.effectGroup.add(line);
+  return line;
 }
 
 export function tree(position) {

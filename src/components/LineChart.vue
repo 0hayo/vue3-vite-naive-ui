@@ -1,6 +1,6 @@
 <template>
   <BoxSolt :style="style" title="报警趋势统计图" titleIcon="close">
-    <BaseEcharts :options="options" width="380px" height="178px"/>
+    <BaseEcharts :options="options" width="380px" height="200px"/>
   </BoxSolt>
 </template>
 
@@ -17,7 +17,7 @@ export default defineComponent({
   setup() {
     const style = {
       width: "400px",
-      height: "232px",
+      height: "257px",
       marginTop: "20px",
     };
     const options = {

@@ -5,9 +5,9 @@
         <svg-icon :iconClass="titleIcon" className="icon" />
         {{ title }}
       </div>
-      <div class="more" v-if="moreIcon">
+      <div class="more" v-if="moreIcon" @click="RTHandle()">
         <svg-icon :iconClass="moreIcon" className="icon" />
-        查看更多
+        {{ RTName }}
       </div>
     </div>
     <div class="main">
@@ -16,35 +16,36 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
-  name: "BoxSolt",
-  props: {
-    style: {
-      type: Object,
-      default: {
-        width: "400px",
-        height: "400px",
-      },
-    },
-    title: {
-      type: String,
-      default: "入侵报警日志",
-    },
-    titleIcon: {
-      type: String,
-      default: "",
-    },
-    moreIcon: {
-      type: String,
-      default: "",
+<script lang="ts" setup>
+const { style, title, titleIcon, moreIcon, RTHandle, RTName } = defineProps({
+  style: {
+    type: Object,
+    default: {
+      width: "400px",
+      height: "400px",
     },
   },
-  setup(props) {
-    return {};
+  title: {
+    type: String,
+    default: "入侵报警日志",
   },
-});
+  titleIcon: {
+    type: String,
+    default: "",
+  },
+  moreIcon: {
+    type: String,
+    default: "",
+  },
+  RTName: {
+    type: String,
+    default: "",
+  },
+  RTHandle: {
+    type: Function,
+    default: () => {}
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -56,10 +57,12 @@ export default defineComponent({
   background: rgba(18, 32, 51, 0.6);
   backdrop-filter: blur(30px);
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.25);
+
   .head {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     .title {
       font-size: 14px;
       background: linear-gradient(270deg, #ffffff 0%, #32c5ff 100%);
@@ -68,18 +71,22 @@ export default defineComponent({
       background-clip: text;
       display: inline-block;
       border-bottom: 1px solid #32c5ff;
+
       .icon {
         color: #32c5ff;
       }
     }
+
     .more {
       font-size: 10px;
       cursor: pointer;
+
       &:active {
         color: #32c5ff;
       }
     }
   }
+
   .main {
     width: 100%;
     height: calc(100% - 33.39px);

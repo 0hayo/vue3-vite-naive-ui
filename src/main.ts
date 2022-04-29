@@ -13,16 +13,16 @@ app.mount('#app')
 
 app.component('svg-icon',SvgIcon);
 
-router.beforeEach((to, from, next) => {
-  if(to.name === 'Login') {
-    next();
-  }else {
-    if(getToken()) {
-      next();
-    } else {
-      next({
-        path: '/login'
-      })
-    }
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if(to.name === 'Login') {
+//     next();
+//   }else {
+//     if(getToken()) {
+//       next();
+//     } else {
+//       next({
+//         path: '/login'
+//       })
+//     }
+//   }
+// })

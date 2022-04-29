@@ -1,5 +1,5 @@
 <template>
-  <BoxSolt :style="style" title="设备状态" titleIcon="close" moreIcon="close">
+  <BoxSolt :style="style" title="设备状态" titleIcon="close" RTName="查看更多" moreIcon="close" :RTHandle="RTHandle">
     <div class="eq-box">
       <div class="eq" v-for="item in equipments" :key="item.name">
         <p class="name">{{ item.name }}</p>
@@ -9,48 +9,64 @@
       </div>
     </div>
   </BoxSolt>
+  <AllEqStates :time="time"></AllEqStates>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { provide, reactive, ref } from 'vue';
 import BoxSolt from "@/components/BoxSolt.vue";
-export default defineComponent({
-  name: "EquipmentState",
-  components: {
-    BoxSolt,
-  },
-  setup() {
-    const style = {
-      width: "400px",
-      height: "220px",
-      marginTop: "20px",
-    };
-    const equipments = [
-      {
-        name: '雷达',
-        icon: 'touxiang',
-        num: 1,
-        state: '全部在线'
-      },
-      {
-        name: '地听器',
-        icon: 'touxiang',
-        num: 7,
-        state: '全部在线'
-      },
-      {
-        name: '声纳',
-        icon: 'touxiang',
-        num: 4,
-        state: '全部在线'
-      }
-    ]
-    return {
-      style,
-      equipments
-    };
-  },
+import AllEqStates from '@/components/AllEqStates.vue';
+
+let time = reactive({
+  value: []
 });
+let showCModal = ref(false)
+provide('showCModal', showCModal)
+provide('header', {
+	title: '设备异常日志',
+	iconClass: 'touxiang'
+})
+
+provide('close', () => {
+	showCModal.value = false;
+})
+
+provide('updateTime', (v, f) => {
+  time.value = v;
+	console.log('更新数据',v, f);
+})
+
+const style = {
+  width: "400px",
+  height: "220px",
+  marginTop: "20px",
+};
+const equipments = [
+  {
+    name: '雷达',
+    icon: 'touxiang',
+    num: 1,
+    state: '全部在线'
+  },
+  {
+    name: '地听器',
+    icon: 'touxiang',
+    num: 7,
+    state: '全部在线'
+  },
+  {
+    name: '声纳',
+    icon: 'touxiang',
+    num: 4,
+    state: '全部在线'
+  }
+]
+
+const RTHandle = () => {  
+	// 查看更多
+	showCModal.value = true;
+}
+
 </script>
 <style lang="scss" scoped>
 .eq-box {
@@ -59,19 +75,24 @@ export default defineComponent({
   display: flex;
   justify-content: space-around;
   align-items: center;
+
   .eq {
     text-align: center;
     font-size: 14px;
-    .name, .num {
+
+    .name,
+    .num {
       background: linear-gradient(270deg, #FFFFFF 0%, #32C5FF 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin-bottom: 10px;
     }
+
     .state {
       color: #ECFFFB;
     }
+
     .icon {
       font-size: 32px;
     }

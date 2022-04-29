@@ -26,16 +26,18 @@ export default defineComponent({
     const data: Array<Array<Number>> = [];
     const noise = getNoiseHelper();
     noise.seed(Math.random());
-    for (let i = 0; i <= 180; i++) {
-      for (let j = 0; j <= 120; j++) {
+    for (let i = 0; i <= 90; i++) {
+      for (let j = 0; j <= 60; j++) {
         // let x = (max - min) * i / 200 + min;
         // let y = (max - min) * j / 100 + min;
         data.push([i, j, noise.perlin2(i / 40, j / 20) + 0.5]);
         // data.push([i, j, normalDist(theta, x) * normalDist(theta, y)]);
       }
-      xData.push(i);
     }
-    for (let j = 0; j < 120; j++) {
+    for (let i = 0; i < 180; i++) {
+      i%2==0 && xData.push(i);
+    }
+    for (let j = 0; j < 60; j++) {
       yData.push(j);
     }
     let options = {
@@ -209,7 +211,7 @@ export default defineComponent({
     }
     // setInterval(() => {
     //   let data1: Array<Array<Number>> = [];
-    //   for (let i = 0; i <= 180; i++) {
+    //   for (let i = 0; i <= 90; i++) {
     //     const a = data.filter(v => v[0] == i)
     //     a.reverse();
     //     for (let j = 0; j < a.length; j++) {
