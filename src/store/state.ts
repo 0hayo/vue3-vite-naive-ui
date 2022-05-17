@@ -1,7 +1,5 @@
-export interface State {
-  title: string;
+export interface EqState {
+  radarList: Array<any>
+  sonarList: Array<any>
+  dtList: Array<any>
 }
-
-export const state: State = {
-  title: 'Vue(v3) 与 tsx 的结合~',
-};

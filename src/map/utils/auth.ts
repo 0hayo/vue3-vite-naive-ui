@@ -6,7 +6,9 @@ import { Radar, Wall } from '../effect/index.js'
 import { radarData, wallData } from '../data.js';
 import TWEEN from '@tweenjs/tween.js'
 import Shader from './shader'
-import store from '../../store';
+// import store from '../../store';
+import { useStore } from 'vuex';
+const store = useStore();
 
 export const width = 1920;
 export const height = 1080;
@@ -70,10 +72,11 @@ export const createWater = () => {
   return water;
 }
 
+// 地图
 export const mapLoader = (): any => {
   return new Promise((resovle, reject) => {
     var loader = new GLTFLoader();
-    loader.load('/assets/moxing6.gltf', (obj) => {
+    loader.load('/assets/moxing.gltf', (obj) => {
       // obj.scene.scale.set(0.1,0.1,0.1);//网格模型缩放
       // obj.children[0].geometry.center();//网格模型的几何体居中
       // obj.children[0].material.color.set(0xffffff);//设置材质颜色
@@ -85,7 +88,32 @@ export const mapLoader = (): any => {
       //     child['material'].emissiveMap = child['material'].map;
       //   }
       // });
-      obj.scene.position.y = 2;
+      obj.scene.position.y = 15;
+      resovle(obj.scene);
+    })
+  })
+}
+
+// 雷达
+export const radarLoader = ([x, y, z]): any => {
+  return new Promise((resovle, reject) => {
+    var loader = new GLTFLoader();
+    loader.load('/assets/radar.gltf', (obj) => {
+      obj.scene.scale.set(0.1,0.1,0.1);//网格模型缩放
+      obj.scene.position.set(x, y, z)
+      // obj.scene.position.set(40, 20, 30)
+      resovle(obj.scene);
+    })
+  })
+}
+
+// 声纳
+export const sonarLoader = ([x, y, z]): any => {
+  return new Promise((resovle, reject) => {
+    var loader = new GLTFLoader();
+    loader.load('/assets/sonar.gltf', (obj) => {
+      obj.scene.scale.set(0.1,0.1,0.1);//网格模型缩放
+      obj.scene.position.set(x, y, z)
       resovle(obj.scene);
     })
   })
@@ -115,7 +143,7 @@ export const createBox = () => {
   boxData.forEach(item => {
     const mesh = createBoxGeometry(item);
     group.name = 'box';
-    group.add(mesh)
+    group.add(mesh);
   })
   return group;
 }

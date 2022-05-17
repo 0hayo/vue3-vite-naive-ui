@@ -1,16 +1,151 @@
 <template>
-  <box-solt :style="style" titleIcon="close" moreIcon="close" RTName="查看更多" :RTHandle="RTHandle">
-    <n-scrollbar style="max-height: 100%; padding: 10px 30px; box-sizing: border-box">
-      <n-timeline>
-        <n-timeline-item content="啊"></n-timeline-item>
-        <n-timeline-item type="success" title="成功" content="哪里成功" time="2018-04-03 20:46"></n-timeline-item>
-        <n-timeline-item type="error" content="哪里错误" time="2018-04-03 20:46"></n-timeline-item>
-        <n-timeline-item type="warning" title="警告" content="哪里警告" time="2018-04-03 20:46"></n-timeline-item>
-        <n-timeline-item type="info" title="信息" content="是的" time="2018-04-03 20:46" line-type="dashed">
+  <box-solt :style="style" titleIcon="light" moreIcon="close" RTName="查看更多" :RTHandle="RTHandle">
+    <n-scrollbar class="c-scrollbar" style="max-height: 100%; padding: 10px; box-sizing: border-box">
+      <n-timeline style="padding-left: 70px; width: auto;">
+        <n-timeline-item>
+          <div class="timeline-item">
+            <div class="timeline-item_warning">
+              <p>1号设备 「雷达」</p>
+              <p>警告：发现入侵报警信号</p>
+            </div>
+            <div class="timeline-item_icon">
+              <svg-icon iconClass="fieldTime" class="dingwei" />定位设备
+            </div>
+          </div>
+          <div class="timeline-item_time">
+            <p>20:46</p>
+            <p>2018-04-03</p>
+          </div>
+          <template #icon>
+            <svg-icon iconClass="fieldTime" class="icon" />
+          </template>
         </n-timeline-item>
-        <n-timeline-item content="啊"></n-timeline-item>
-        <n-timeline-item content="啊"></n-timeline-item>
-        <n-timeline-item content="啊"></n-timeline-item>
+        <n-timeline-item>
+          <div class="timeline-item">
+            <div class="timeline-item_warning">
+              <p>1号设备 「雷达」</p>
+              <p>警告：发现入侵报警信号</p>
+            </div>
+            <div class="timeline-item_icon">
+              定位设备
+            </div>
+          </div>
+          <div class="timeline-item_time">
+            <p>20:46</p>
+            <p>2018-04-03</p>
+          </div>
+          <template #icon>
+            <svg-icon iconClass="fieldTime" class="icon" />
+          </template>
+        </n-timeline-item>
+        <n-timeline-item>
+          <div class="timeline-item">
+            <div class="timeline-item_warning">
+              <p>1号设备 「雷达」</p>
+              <p>警告：发现入侵报警信号</p>
+            </div>
+            <div class="timeline-item_icon">
+              定位设备
+            </div>
+          </div>
+          <div class="timeline-item_time">
+            <p>20:46</p>
+            <p>2018-04-03</p>
+          </div>
+          <template #icon>
+            <svg-icon iconClass="fieldTime" class="icon" />
+          </template>
+        </n-timeline-item>
+        <n-timeline-item>
+          <div class="timeline-item">
+            <div class="timeline-item_warning">
+              <p>1号设备 「雷达」</p>
+              <p>警告：发现入侵报警信号</p>
+            </div>
+            <div class="timeline-item_icon">
+              定位设备
+            </div>
+          </div>
+          <div class="timeline-item_time">
+            <p>20:46</p>
+            <p>2018-04-03</p>
+          </div>
+          <template #icon>
+            <svg-icon iconClass="fieldTime" class="icon" />
+          </template>
+        </n-timeline-item>
+        <n-timeline-item>
+          <div class="timeline-item">
+            <div class="timeline-item_warning">
+              <p>1号设备 「雷达」</p>
+              <p>警告：发现入侵报警信号</p>
+            </div>
+            <div class="timeline-item_icon">
+              定位设备
+            </div>
+          </div>
+          <div class="timeline-item_time">
+            <p>20:46</p>
+            <p>2018-04-03</p>
+          </div>
+          <template #icon>
+            <svg-icon iconClass="fieldTime" class="icon" />
+          </template>
+        </n-timeline-item>
+        <n-timeline-item>
+          <div class="timeline-item">
+            <div class="timeline-item_warning">
+              <p>1号设备 「雷达」</p>
+              <p>警告：发现入侵报警信号</p>
+            </div>
+            <div class="timeline-item_icon">
+              定位设备
+            </div>
+          </div>
+          <div class="timeline-item_time">
+            <p>20:46</p>
+            <p>2018-04-03</p>
+          </div>
+          <template #icon>
+            <svg-icon iconClass="fieldTime" class="icon" />
+          </template>
+        </n-timeline-item>
+        <n-timeline-item>
+          <div class="timeline-item">
+            <div class="timeline-item_warning">
+              <p>1号设备 「雷达」</p>
+              <p>警告：发现入侵报警信号</p>
+            </div>
+            <div class="timeline-item_icon">
+              定位设备
+            </div>
+          </div>
+          <div class="timeline-item_time">
+            <p>20:46</p>
+            <p>2018-04-03</p>
+          </div>
+          <template #icon>
+            <svg-icon iconClass="fieldTime" class="icon" />
+          </template>
+        </n-timeline-item>
+        <n-timeline-item>
+          <div class="timeline-item">
+            <div class="timeline-item_warning">
+              <p>1号设备 「雷达」</p>
+              <p>警告：发现入侵报警信号</p>
+            </div>
+            <div class="timeline-item_icon">
+              定位设备
+            </div>
+          </div>
+          <div class="timeline-item_time">
+            <p>20:46</p>
+            <p>2018-04-03</p>
+          </div>
+          <template #icon>
+            <svg-icon iconClass="fieldTime" class="icon" />
+          </template>
+        </n-timeline-item>
       </n-timeline>
     </n-scrollbar>
   </box-solt>
@@ -52,4 +187,58 @@ const RTHandle = () => {
 };
 </script>
 <style lang="scss" scoped>
+.timeline-item {
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  position: relative;
+  min-height: 50PX;
+  &_warning {
+    margin-top: -10px;
+    p {
+      max-width: 160px;
+    }
+    p:last-child {
+      margin-top: 8px;
+    }
+  }
+  &_time {
+    position: absolute;
+    top: 0;
+    left: -70px;
+    color: #FFFFFF;
+    font-size: 10px;
+    text-align: center;
+  }
+  &_icon {
+    display: none;
+    margin-top: -10px;
+    .dingwei {
+      margin-right: 6px;
+    }
+  }
+  &:hover {
+    color: #FFFFFF;
+    p:last-child {
+      font-size: 14px;
+      color: #F7B500;
+    }
+    .timeline-item_icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+</style>
+<style lang="scss">
+.c-scrollbar {
+  .n-timeline .n-timeline-item .n-timeline-item-timeline .n-timeline-item-timeline__line {
+    bottom: 5px;
+    top: 20px;
+    background-color: #32C5FF;
+  }
+}
 </style>

@@ -11,25 +11,36 @@
 
 <script lang="ts" setup>
 import MessageApi from '@/components/MessageApi.vue';
-import { zhCN, dateZhCN } from 'naive-ui'
-import type { NLocale, NDateLocale } from 'naive-ui'
-import { ref } from 'vue';
-// import { GlobalThemeOverrides } from 'naive-ui';
+import { zhCN, dateZhCN } from 'naive-ui';
+import type { NLocale, NDateLocale } from 'naive-ui';
+import { onMounted, ref } from 'vue';
+import EquipmentApi from '@/api/equipment';
+import { useStore } from 'vuex';
 
-// const themeOverrides: GlobalThemeOverrides = {
-//   common: {
-//     primaryColor: '#FF0000'
-//   },
-//   Button: {
-//     textColor: '#FF0000'
-//   },
-//   Table: {
-//     tdColorModal: 'rgba(0, 0, 0, 0)'
-//   }
-// }
+const store = useStore();
 
-const locale = ref<NLocale>(zhCN)
-const dateLocale = ref<NDateLocale>(dateZhCN)
+const locale = ref<NLocale>(zhCN);
+const dateLocale = ref<NDateLocale>(dateZhCN);
+
+onMounted(() => {
+  getDeviceList();
+});
+
+const getDeviceList = async () => {
+  try {
+    const data = await EquipmentApi.getDeviceList();
+    const list = data.result;
+    console.log(list);
+    const radar = list.filter((v) => v.type === 'radar');
+    const sonar = list.filter((v) => v.type === 'sonar');
+    const dt = list.filter((v) => v.type === 'dt');
+    store.dispatch('updateRadar', radar);
+    store.dispatch('updateSonar', sonar);
+    store.dispatch('updateDt', dt);
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
 
 <style>

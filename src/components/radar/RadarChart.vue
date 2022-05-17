@@ -1,5 +1,5 @@
 <template>
-  <BoxSolt :style="style" title="雷达扫描图" titleIcon="close">
+  <BoxSolt :style="style" title="雷达扫描图" titleIcon="light">
     <div class="radar-box">
       <canvas id="radar" class="radar" width="380" height="312">您的浏览器暂不支持Canvas</canvas>
     </div>
@@ -25,8 +25,8 @@ export default defineComponent({
       const radar = createRadar('radar');
       if(radar) radar.scan();
       setTimeout(() => {
-        radar.addPoints(120, 120);
         radar.removePoints();
+        radar.addPoints(120, 120);
       }, 2000);
     })
     return {

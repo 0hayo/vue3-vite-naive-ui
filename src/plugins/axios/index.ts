@@ -5,7 +5,7 @@ import requestInterceptor from "./interceptors/request";
 // 创建axios实例
 const axiosInstance: Axios = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API_PATH,
-  baseURL: '',
+  baseURL: 'http://192.168.1.123:80/api',
   timeout: 10000,
   withCredentials: true,
 });

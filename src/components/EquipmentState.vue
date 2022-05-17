@@ -1,5 +1,5 @@
 <template>
-  <BoxSolt :style="style" title="设备状态" titleIcon="close" RTName="查看更多" moreIcon="close" :RTHandle="RTHandle">
+  <BoxSolt :style="style" title="设备状态" titleIcon="deploymentUnit" RTName="查看更多" moreIcon="close" :RTHandle="RTHandle">
     <div class="eq-box">
       <div class="eq" v-for="item in equipments" :key="item.name">
         <p class="name">{{ item.name }}</p>
@@ -13,10 +13,13 @@
 </template>
 
 <script lang="ts" setup>
-import { provide, reactive, ref } from 'vue';
+import { computed, onMounted, provide, reactive, ref, watch } from 'vue';
 import BoxSolt from "@/components/BoxSolt.vue";
 import AllEqStates from '@/components/AllEqStates.vue';
+import { useStore } from 'vuex'
 
+const store = useStore();
+const radarList = computed(() => store.getters.radarList);
 let time = reactive({
   value: []
 });
@@ -41,32 +44,31 @@ const style = {
   height: "220px",
   marginTop: "20px",
 };
-const equipments = [
+const equipments = computed(() =>[
   {
     name: '雷达',
-    icon: 'touxiang',
-    num: 1,
+    icon: 'subtract',
+    num: radarList.value.length,
     state: '全部在线'
   },
   {
     name: '地听器',
-    icon: 'touxiang',
-    num: 7,
+    icon: 'frame',
+    num: radarList.value.length,
     state: '全部在线'
   },
   {
     name: '声纳',
-    icon: 'touxiang',
-    num: 4,
+    icon: 'vector',
+    num: radarList.value.length,
     state: '全部在线'
   }
-]
+])
 
 const RTHandle = () => {  
 	// 查看更多
 	showCModal.value = true;
 }
-
 </script>
 <style lang="scss" scoped>
 .eq-box {

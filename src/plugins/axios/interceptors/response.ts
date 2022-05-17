@@ -1,7 +1,7 @@
 import { Axios } from "axios";
 
 export default (axiosInstance: Axios): void => {
-  // 相应拦截器
+  //  响应拦截器
   axiosInstance.interceptors.response.use(
     (response) => {
       const { responseType } = response.config;
@@ -9,11 +9,11 @@ export default (axiosInstance: Axios): void => {
       if (responseType === "blob") {
         return response;
       }
-      const { success, errMsg } = response.data;
+      const { code, msg } = response.data;
       // 处理失败请求
-      if (!success) {
-        window.$message.error(errMsg);
-        return Promise.reject(errMsg);
+      if (code !== 200) {
+        window.$message.error(msg);
+        return Promise.reject(msg);
       }
       return response.data;
     },

@@ -87,20 +87,20 @@ const Shader = {
 export default function (opts) {
     const {
         radius = 50,
-            color = "#fff",
-            speed = 1,
-            opacity = 1,
-            angle = Math.PI,
-            position = {
-                x: 0,
-                y: 0,
-                z: 0
-            },
-            rotation = {
-                x: -Math.PI / 2,
-                y: 0,
-                z: 0
-            }
+        color = "#efad35",
+        speed = 3,
+        opacity = 0.6,
+        angle = Math.PI,
+        position = {
+            x: 0,
+            y: 0,
+            z: 0
+        },
+        rotation = {
+            x: -Math.PI / 2,
+            y: 0,
+            z: 0
+        }
     } = opts;
 
     const width = radius * 2;

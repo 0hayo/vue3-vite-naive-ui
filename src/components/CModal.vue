@@ -17,6 +17,11 @@
 <script setup lang="ts">
 import { inject } from 'vue';
 import TimeInput from './TimeInput.vue';
+interface Header {
+  iconClass: string
+  title: string
+}
+
 const { style } = defineProps({
   style: {
     type: Object,
@@ -25,7 +30,7 @@ const { style } = defineProps({
 })
 
 const showCModal = inject('showCModal');
-const header = inject('header');
+const header = inject('header') as Header;
 const close = inject('close');
 
 </script>

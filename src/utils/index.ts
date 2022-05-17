@@ -2,7 +2,11 @@ import store from '../store';
 // import { useNotification, NotificationType } from 'naive-ui';
 
 export const getToken = () => {
-  return store.getters.token;
+  return store.getters.token || sessionStorage.getItem('token') || '';
+}
+
+export const getUserInfo = () => {
+  return store.getters.userInfo || JSON.parse(sessionStorage.getItem('userInfo') as string);
 }
 
 // export const notify = (type: NotificationType = 'info', content: string = '说点啥呢', meta: string = '想不出来') => {
@@ -62,14 +66,14 @@ export const FormatDate = (time: number | Date, type: string = TimeType.yyyy_mm_
 }
 
 export const launchFullscreen = () => {
-  const element = document.body;
-  if(element.requestFullscreen) {
-    element.requestFullscreen();
+  if(isFullscreen()) {
+    document.exitFullscreen && document.exitFullscreen()
+  } else {
+    const element = document.body;
+    element.requestFullscreen && element.requestFullscreen();
   }
 }
 
-export const exitFullscreen = () => {
-  if(document.exitFullscreen) {
-    document.exitFullscreen();
-  }
+function isFullscreen() {
+  return document.fullscreenElement !== null
 }

@@ -1,5 +1,5 @@
 <template>
-  <BoxSolt :style="style" title="声纳定向瀑布图" titleIcon="close">
+  <BoxSolt :style="style" title="声纳定向瀑布图" titleIcon="light">
     <BaseEcharts :options="options" :flag="flag" width="100%" height="100%"></BaseEcharts>
   </BoxSolt>
 </template>

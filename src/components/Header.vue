@@ -12,11 +12,11 @@
     <div class="user-control">
       <svg-icon iconClass="touxiang" className="touxiang" />
       <div>
-        <p class="name">李逍遥</p>
+        <p class="name">{{ userInfo.nickname }}</p>
         <p class="no">编号：000001</p>
       </div>
       <div class="min-close">
-        <n-button secondary strong @click="exitFullscreen">
+        <n-button secondary strong @click="changeFullScreen">
           <template #icon>
             <n-icon>
               <svg-icon iconClass="min" className="ctr-icon" />
@@ -36,9 +36,19 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-import { FormatDate, launchFullscreen, TimeType, exitFullscreen } from '../utils';
+import { inject, onMounted, Ref, ref } from 'vue';
+import { FormatDate, launchFullscreen, TimeType } from '../utils';
 import { NButton, NIcon } from 'naive-ui';
+import { getUserInfo } from '@/utils/index';
+
+const userInfo = getUserInfo();
+
+const fullScreen = inject('fullScreen') as Ref<Boolean>;
+const setFullScreen = inject('setFullScreen') as Function;
+
+const changeFullScreen = () => {
+  setFullScreen(!fullScreen.value)
+}
 
 let time = ref('');
 let data = ref('');
@@ -55,13 +65,13 @@ const getTimes = () => {
   time.value = timeArr[1];
   week.value = timeArr[2];
 }
-const fullScreen = () => {
-  launchFullscreen(document.body);
-}
 </script>
 
 <style lang="scss" scoped>
 .header {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 74px;
   background: url('@/assets/headerbg.png') no-repeat;

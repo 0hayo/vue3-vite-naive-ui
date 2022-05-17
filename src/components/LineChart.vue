@@ -1,5 +1,5 @@
 <template>
-  <BoxSolt :style="style" title="报警趋势统计图" titleIcon="close">
+  <BoxSolt :style="style" title="报警趋势统计图" titleIcon="appstore">
     <BaseEcharts :options="options" width="380px" height="200px"/>
   </BoxSolt>
 </template>

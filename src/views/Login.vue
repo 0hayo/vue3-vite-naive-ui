@@ -2,7 +2,6 @@
   <div class="login">
     <div class="login-box">
       <div class="login-box_title">雷达水声探测周界安防系统</div>
-      {{userName,  password}}
       <div class="login-box_input">
         <CInput label="用户名" iconClass="name" name="userName" :value="userName" placeholder="在此输入登录账号" @userNameInput="userNameInput" />
         <CInput label="密码" iconClass="password" name="password" :value="password" placeholder="在此输入登录密码" type="password" @passwordInput="passwordInput" />
@@ -24,20 +23,26 @@ import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import CInput from '@/components/CInput.vue';
+import userApi from '@/api/user'
 const loading = ref(false);
 const userName = ref('')
 const password = ref('')
 const router = useRouter()
 const store = useStore()
 const login = () => {
-  loading.value = true;
-  document.body.requestFullscreen();
-  setTimeout(() => {
-    store.dispatch('addToken', '111')
-    router.push({
-      path: '/'
-    })
-  }, 1000);
+  userApi.login(userName.value, password.value).then(data => {
+    try {
+      const result = data.result;
+      store.dispatch('login', result)
+      loading.value = true;
+      document.body.requestFullscreen();
+      router.push({
+        path: '/'
+      })
+    } catch (error) {
+      
+    }
+  })
 }
 const userNameInput = (v) => {
   userName.value = v;

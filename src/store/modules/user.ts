@@ -1,24 +1,31 @@
 const state = {
-  token: ''
+  token: '',
+  userInfo: null
 }
 
 const mutations = {
   ADD_TOKEN(state, token) {
     state.token = token;
-    // localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token)
+  },
+  USER_LOGIN(state, user) {
+    state.userInfo = user;
+    sessionStorage.setItem('userInfo', JSON.stringify(user))
   },
   USER_LOGOUT(state) {
     state.token = null;
-    // localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('userInfo');
   }
 }
 
 const actions = {
-  addToken({ commit }, token) {
-    commit('ADD_TOKEN', token);
-  },
   logout({ commit }) {
     commit('USER_LOGOUT');
+  },
+  login({ commit }, result) {
+    commit('USER_LOGIN', result.user);
+    commit('ADD_TOKEN', result.token);
   }
 }
 

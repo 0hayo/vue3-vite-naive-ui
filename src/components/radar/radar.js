@@ -132,7 +132,8 @@ export default function createRadar(canvas) {
 			this.points.push([x, y]);
 		},
 		removePoints() {
-			this.points.shift();
+			// this.points.shift();
+			this.points = [];
 		},
 		clear() {
 			cancelAnimationFrame(this.animID);		// 停止动画

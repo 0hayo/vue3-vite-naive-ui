@@ -15,6 +15,7 @@ export default class Config {
     name: API_PATH
   });
   public static TIME_OUT: number = 10000;
+  public static WEBSOCKET_URL: string = ''
 
   public static getAxiosUrl() {
     return `http://${this.SERVER_URL}:${this.SERVER_PORT + this.API_PATH}`;

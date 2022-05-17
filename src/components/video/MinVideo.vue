@@ -1,5 +1,5 @@
 <template>
-  <BoxSolt :style="style" title="雷达高清监控画面" titleIcon="close">
+  <BoxSolt :style="style" title="雷达高清监控画面" titleIcon="light">
     <Video></Video>
   </BoxSolt>
 </template>
