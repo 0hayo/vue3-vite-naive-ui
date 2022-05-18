@@ -36,6 +36,7 @@ import { Radar, Wall } from '@/map/effect/index.js';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 import * as dat from 'dat.gui';
+import { debug } from 'console';
 
 let selectModal: any = null;
 const store = useStore();
@@ -52,28 +53,101 @@ const transformControl = new TransformControls(camera, renderer.domElement);
 const dtList = computed(() => store.getters.dtList);
 const sonarList = computed(() => store.getters.sonarList);
 const radarList = computed(() => store.getters.radarList);
-watch(dtList, (v) => {
-  wallGroup.traverse((item) => {
-    disposeChild(item);
-  });
-  dtList.value.forEach((v) => {
-    wallGroup.traverse((item) => {
+console.log(dtList.value)
+
+watch(radarList, (data: Array<any>) => {
+  radarList.value.forEach((v) => {
+    const position = v.coordinate.split(',');
+    radarLoader(position).then((mesh) => {
+      mesh.name = 'radar';
+      scene.add(mesh);
     });
-    // const position = v.coordinate.split(',');
-    // const mesh = Wall({
-    //   position: {
-    //     x: position[0],
-    //     y: position[1],
-    //     z: position[2]
-    //   },
-    //   speed: 0.5,
-    //   color: v.status === 0 ?'#efad35' : '#ff0000',
-    //   opacity: 0.6,
-    //   radius: 10,
-    //   height: 5,
-    //   renderOrder: 5
-    // });
-    // wallGroup.add(mesh);
+  });
+});
+watch(dtList, (data: Array<any>) => {
+  if (wallGroup.children.length > 0) {
+    wallGroup.children.forEach((item) => {
+      const eq = data.filter(v => v.id === item['eqId'])
+      if (eq[0].status !== item['status']) {
+        item['status'] = eq[0].status;
+        item['material'].uniforms.u_color.value = new THREE.Color(eq[0].status === 0 ? '#efad35' : '#ff0000');
+        var pos = new THREE.Vector3(item['cameraPos'].x, item['cameraPos'].y, item['cameraPos'].z);
+        var pos2 = new THREE.Vector3(item['controlsPos'].x, item['controlsPos'].y, item['controlsPos'].z);
+        animateCamera(camera, pos, controls, pos2, item);
+      }
+    });
+    return;
+  }
+  dtList.value.forEach((v) => {
+    const position = v.coordinate.split(',');
+    const mesh = Wall({
+      position: {
+        x: position[0],
+        y: position[1],
+        z: position[2]
+      },
+      speed: 0.5,
+      color: v.status === 1 ? '#efad35' : '#ff0000',
+      opacity: 0.6,
+      radius: 10,
+      height: 5,
+      renderOrder: 5
+    });
+    mesh.eqId = v.id;
+    mesh.status = v.status;
+    mesh['cameraPos'] = {
+      x: 0,
+      y: 400,
+      z: 600,
+    };
+    mesh['controlsPos'] = {
+      x: position[0],
+      y: position[1],
+      z: position[2],
+    };
+    wallGroup.add(mesh);
+  });
+});
+watch(sonarList, (data: Array<any>) => {
+  if (radarGroup.children.length > 0) {
+    radarGroup.children.forEach((item) => {
+      const eq = data.filter(v => v.id === item['eqId'])
+      if (eq[0].status !== item['status']) {
+        item['status'] = eq[0].status;
+        item['material'].uniforms.u_color.value = new THREE.Color(eq[0].status === 0 ? '#efad35' : '#ff0000');
+        var pos = new THREE.Vector3(item['cameraPos'].x, item['cameraPos'].y, item['cameraPos'].z);
+        var pos2 = new THREE.Vector3(item['controlsPos'].x, item['controlsPos'].y, item['controlsPos'].z);
+        animateCamera(camera, pos, controls, pos2, item);
+      }
+    });
+    return;
+  }
+  sonarList.value.forEach((v) => {
+    const position = v.coordinate.split(',');
+    sonarLoader(position).then((mesh) => {
+      scene.add(mesh);
+    });
+    const mesh = Radar({
+      position: {
+        x: position[0],
+        y: position[1],
+        z: position[2],
+      },
+      color: v.status === 1 ? '#efad35' : '#ff0000',
+    });
+    mesh.eqId = v.id;
+    mesh.status = v.status;
+    mesh['cameraPos'] = {
+      x: 0,
+      y: 400,
+      z: 600,
+    };
+    mesh['controlsPos'] = {
+      x: position[0],
+      y: position[1],
+      z: position[2],
+    };
+    radarGroup.add(mesh);
   });
 });
 
@@ -199,47 +273,6 @@ const init = () => {
 
   mapLoader().then((mesh) => {
     scene.add(mesh);
-  });
-
-  radarList.value.forEach((v) => {
-    const position = v.coordinate.split(',');
-    radarLoader(position).then((mesh) => {
-      mesh.name = 'radar';
-      scene.add(mesh);
-    });
-  });
-
-  sonarList.value.forEach((v) => {
-    const position = v.coordinate.split(',');
-    sonarLoader(position).then((mesh) => {
-      scene.add(mesh);
-    });
-    const mesh = Radar({
-      position: {
-        x: position[0],
-        y: position[1],
-        z: position[2],
-      },
-    });
-    radarGroup.add(mesh);
-  });
-
-  dtList.value.forEach((v) => {
-    const position = v.coordinate.split(',');
-    const mesh = Wall({
-      position: {
-        x: position[0],
-        y: position[1],
-        z: position[2],
-      },
-      speed: 0.5,
-      color: v.status === 0 ? '#efad35' : '#ff0000',
-      opacity: 0.6,
-      radius: 10,
-      height: 5,
-      renderOrder: 5,
-    });
-    wallGroup.add(mesh);
   });
 
   // box

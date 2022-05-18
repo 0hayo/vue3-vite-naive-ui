@@ -4,7 +4,7 @@
       <div class="login-box_title">雷达水声探测周界安防系统</div>
       <div class="login-box_input">
         <CInput label="用户名" iconClass="name" name="userName" :value="userName" placeholder="在此输入登录账号" @userNameInput="userNameInput" />
-        <CInput label="密码" iconClass="password" name="password" :value="password" placeholder="在此输入登录密码" type="password" @passwordInput="passwordInput" />
+        <CInput label="密码" iconClass="password" name="password" :value="password" placeholder="在此输入登录密码" type="password" @passwordInput="passwordInput" @keydown.enter="login" />
       </div>
       <div class="login-box_btn">
         <button class="login-box_btn-bt" @click="login">
@@ -12,9 +12,6 @@
         </button>
       </div>
     </div>
-  </div>
-  <div v-if="loading" class="loading">
-    <img src="../assets/loading.gif" alt="">
   </div>
 </template>
 
@@ -24,7 +21,6 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import CInput from '@/components/CInput.vue';
 import userApi from '@/api/user'
-const loading = ref(false);
 const userName = ref('')
 const password = ref('')
 const router = useRouter()
@@ -34,7 +30,6 @@ const login = () => {
     try {
       const result = data.result;
       store.dispatch('login', result)
-      loading.value = true;
       document.body.requestFullscreen();
       router.push({
         path: '/'
@@ -126,16 +121,4 @@ const passwordInput = (v) => {
   }
 }
 
-.loading {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 99;
-  background-color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 </style>
