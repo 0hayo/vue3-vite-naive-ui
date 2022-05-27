@@ -1,12 +1,7 @@
-/* eslint-disable no-undef */
-// import { Modal, notification } from 'antd';
 // import Config from "./config";
-
-const WEBSOCKET_URL = '192.168.1.155'
 
 class WebSocketHelper {
   private static instance: WebSocketHelper;
-  private static serverInstance: WebSocketHelper;
   private ws: WebSocket = null!;
   private connectTimer: NodeJS.Timeout = null!;
   private heartBeatTimer: NodeJS.Timeout = null!;
@@ -16,7 +11,7 @@ class WebSocketHelper {
   private readonly reconnectMaxNum: number = 10;
   private url: string = null!;
 
-  public constructor(url: string = WEBSOCKET_URL) {
+  public constructor(url: string = 'ws:192.168.1.155/admin/websocket') {
     this.url = url;
     // this.start();
   };
@@ -26,13 +21,6 @@ class WebSocketHelper {
       this.instance = new WebSocketHelper();
     };
     return this.instance;
-  };
-
-  public static getServerInstance(url?: string): WebSocketHelper {
-    if (!this.serverInstance) {
-      this.serverInstance = new WebSocketHelper(url);
-    };
-    return this.serverInstance;
   };
 
   // public static close() {
@@ -179,7 +167,7 @@ class WebSocketHelper {
     if(!this.ws) return;
     this.ws.onmessage = (event: MessageEvent<any>) => {
       const message = JSON.parse(event.data);
-      console.log('msg', message);
+      // console.log('msg', message);
       // if (message?.type === "heartBeat") {
       //   // this.heartCheck();
       //   return;

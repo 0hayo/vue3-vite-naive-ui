@@ -1,19 +1,26 @@
 <template>
   <div>
     <div id="scene"></div>
-    <div class="backControl" @click="backControl">返回视角</div>
-    <div class="backControl" @click="logout">{{ dtList.length }}</div>
+    <!-- <div class="backControl" @click="backControl">返回视角</div>
+    <div class="backControl" @click="logout">{{ dtList.length }}</div> -->
+    <div class="backControl" :class="imgLeft">
+      <img :ref="setImgRef" src="../assets/zhizhen.png" alt="">
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import {
+  ref,
   computed,
   onBeforeUnmount,
   onMounted,
   watch,
+  inject,
+  Ref,
 } from 'vue';
 import * as THREE from 'three';
+import { MathUtils } from 'three';
 import { useStore } from 'vuex';
 import {
   createRenderer,
@@ -36,7 +43,16 @@ import { Radar, Wall } from '@/map/effect/index.js';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 import * as dat from 'dat.gui';
-import { debug } from 'console';
+
+const imgRef = ref();
+const setImgRef = (el) => {
+  imgRef.value = el;
+};
+const fullScreen = inject('fullScreen') as Ref<boolean>;
+watch(fullScreen, (v: boolean) => {
+  imgLeft.value = v ? 'img-left' : '';
+})
+const imgLeft = ref('');
 
 let selectModal: any = null;
 const store = useStore();
@@ -53,21 +69,24 @@ const transformControl = new TransformControls(camera, renderer.domElement);
 const dtList = computed(() => store.getters.dtList);
 const sonarList = computed(() => store.getters.sonarList);
 const radarList = computed(() => store.getters.radarList);
-console.log(dtList.value)
+console.log(dtList.value);
 
+const wallGroup = new THREE.Group();
+const sonarGroup = new THREE.Group();
+const radarGroup = new THREE.Group();
 watch(radarList, (data: Array<any>) => {
   radarList.value.forEach((v) => {
     const position = v.coordinate.split(',');
     radarLoader(position).then((mesh) => {
       mesh.name = 'radar';
-      scene.add(mesh);
+      radarGroup.add(mesh);
     });
   });
 });
 watch(dtList, (data: Array<any>) => {
   if (wallGroup.children.length > 0) {
     wallGroup.children.forEach((item) => {
-      const eq = data.filter(v => v.id === item['eqId'])
+      const eq = data.filter(v => v.id === item['eqId']);
       if (eq[0].status !== item['status']) {
         item['status'] = eq[0].status;
         item['material'].uniforms.u_color.value = new THREE.Color(eq[0].status === 0 ? '#efad35' : '#ff0000');
@@ -87,7 +106,7 @@ watch(dtList, (data: Array<any>) => {
         z: position[2]
       },
       speed: 0.5,
-      color: v.status === 1 ? '#efad35' : '#ff0000',
+      color: v.status === 0 ? '#efad35' : '#ff0000',
       opacity: 0.6,
       radius: 10,
       height: 5,
@@ -109,8 +128,8 @@ watch(dtList, (data: Array<any>) => {
   });
 });
 watch(sonarList, (data: Array<any>) => {
-  if (radarGroup.children.length > 0) {
-    radarGroup.children.forEach((item) => {
+  if (sonarGroup.children.length > 0) {
+    sonarGroup.children.forEach((item) => {
       const eq = data.filter(v => v.id === item['eqId'])
       if (eq[0].status !== item['status']) {
         item['status'] = eq[0].status;
@@ -133,7 +152,7 @@ watch(sonarList, (data: Array<any>) => {
         y: position[1],
         z: position[2],
       },
-      color: v.status === 1 ? '#efad35' : '#ff0000',
+      color: v.status === 0 ? '#efad35' : '#ff0000',
     });
     mesh.eqId = v.id;
     mesh.status = v.status;
@@ -147,7 +166,7 @@ watch(sonarList, (data: Array<any>) => {
       y: position[1],
       z: position[2],
     };
-    radarGroup.add(mesh);
+    sonarGroup.add(mesh);
   });
 });
 
@@ -160,35 +179,11 @@ watch(boxData, () => {
   groupAdd(boxData, boxGroup, createBoxGeometry);
 });
 
-const wallGroup = new THREE.Group();
-// const wallData = store.getters.wallData;
-// watch(
-//   wallData,
-//   () => {
-//     wallGroup.traverse(item => {
-//       disposeChild(item);
-//     });
-//     groupAdd(wallData, wallGroup, Wall);
-//   }
-// )
-
-const radarGroup = new THREE.Group();
-// const radarData = store.getters.radarData;
-// watch(
-//   radarData,
-//   () => {
-//     radarGroup.traverse(item => {
-//       disposeChild(item);
-//     });
-//     groupAdd(radarData, radarGroup, Radar);
-//   }
-// )
-
 onMounted(() => {
   init();
-  groupAdd(boxData, boxGroup, createBoxGeometry);
+  // groupAdd(boxData, boxGroup, createBoxGeometry);
   // groupAdd(wallData, wallGroup, Wall);
-  // groupAdd(radarData, radarGroup, Radar);
+  // groupAdd(radarData, sonarGroup, Radar);
   // setTimeout(() => {
   //   store.dispatch('addBox');
   // }, 1000);
@@ -279,7 +274,7 @@ const init = () => {
   // scene.add(boxGroup);
 
   scene.add(wallGroup);
-
+  scene.add(sonarGroup);
   scene.add(radarGroup);
 
   //点光源
@@ -374,11 +369,25 @@ const animate = () => {
 };
 
 const render = () => {
-  radarGroup.children.forEach((radar) => {
-    radar['material'].uniforms['time'].value += 0.5 / 60.0;
+
+  var dir = new THREE.Vector3(-camera.position.x, 0, -camera.position.z).normalize();
+  var theta = Math.atan2(-dir.x, -dir.z);
+  if (imgRef.value) imgRef.value.style.transform = `rotate(${MathUtils.radToDeg(theta)}deg)`;
+
+  sonarGroup.children.forEach((sonar) => {
+    sonar['material'].uniforms['time'].value += 0.5 / 60.0;
   });
   wallGroup.children.forEach((wall) => {
     wall['material'].uniforms['time'].value += 0.5 / 60.0;
+  });
+  radarGroup.children.forEach((radar) => {
+    radar.children.forEach((r) => {
+      r.children.forEach((s) => {
+        s.children.forEach((a) => {
+          a.rotation.y -= 0.005;
+        });
+      });
+    });
   });
 
   water.material.uniforms['time'].value += 0.5 / 60.0;
@@ -428,12 +437,24 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .backControl {
+  width: 108px;
+  height: 108px;
   position: fixed;
-  left: 150px;
-  top: 150px;
+  left: 420px;
+  top: 75px;
   z-index: 9;
+  background: url("../assets/znz.png") no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 1s left ease;
+  transform: scale(0.8);
+}
+
+.img-left {
+  left: 0px;
 }
 
 #scene {

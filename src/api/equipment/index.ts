@@ -1,13 +1,21 @@
 import axiosInstance from "@/plugins/axios"
+import { AlarmLogsParams, Result, StatisticsParams } from '@/typings/global'
 
-interface Result {
-  code: number
-  msg: string
-  result: Array<any>
-}
 
 export default class EquipmentApi {
-  public static getDeviceList(): Promise<Result> {
+  public static getDeviceList<T>(): Promise<Result<T>> {
     return axiosInstance.get('/device/list')
   };
+
+  public static alarmLogs<T>(params: AlarmLogsParams): Promise<Result<T>> {
+    return axiosInstance.get('/statistics/alarmLogs', {
+      params
+    })
+  }
+
+  public static statistics<T>(params: StatisticsParams): Promise<Result<T>> {
+    return axiosInstance.get('/statistics/trendAlarmLog', {
+      params
+    })
+  }
 }

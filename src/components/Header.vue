@@ -19,14 +19,16 @@
         <n-button secondary strong @click="changeFullScreen">
           <template #icon>
             <n-icon>
-              <svg-icon iconClass="min" className="ctr-icon" />
+              <svg-icon v-if="!fullScreen" iconClass="expandHorizontal" class="ctr-icon" className="ctr-icon" />
+              <svg-icon v-if="fullScreen" iconClass="shrinkHorizontal" class="ctr-icon" className="ctr-icon" />
             </n-icon>
           </template>
         </n-button>
-        <n-button secondary strong @click="launchFullscreen">
+        <n-button secondary strong @click="launchFull">
           <template #icon>
             <n-icon>
-              <svg-icon iconClass="close" className="ctr-icon" />
+              <svg-icon v-if="isFull" iconClass="expand" class="ctr-icon" className="ctr-icon" />
+              <svg-icon v-else iconClass="shrink" class="ctr-icon" className="ctr-icon" />
             </n-icon>
           </template>
         </n-button>
@@ -64,6 +66,12 @@ const getTimes = () => {
   data.value = timeArr[0];
   time.value = timeArr[1];
   week.value = timeArr[2];
+}
+
+const isFull = ref(true);
+const launchFull = () => {
+  launchFullscreen();
+  isFull.value = document.fullscreenElement !== null;
 }
 </script>
 
@@ -127,7 +135,7 @@ const getTimes = () => {
 .user-control {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 20px 0 20px 20px;
   width: 230px;
 
   .touxiang {

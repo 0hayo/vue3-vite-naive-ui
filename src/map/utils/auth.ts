@@ -40,7 +40,7 @@ export const createControls = (camera, renderer) => {
   controls.maxPolarAngle = Math.PI * 0.45;
   controls.minPolarAngle = 0;
   controls.target.set(cameraControls[0], cameraControls[1], cameraControls[2]);
-  controls.minDistance = 50.0;
+  controls.minDistance = 300.0;
   controls.maxDistance = 800.0;
   controls.enablePan = false;
   //惯性滑动，滑动大小默认0.25

@@ -8,7 +8,7 @@
       <EquipmentState />
     </div>
     <div class="right" :class="fullScreen ? 'right_yc' : ''">
-      <MinVideo v-show="!loading" />
+      <MinVideo v-if="!loading" />
       <RadarChart />
       <SonarChart />
     </div>
@@ -30,6 +30,7 @@ import RadarChart from '@/components/radar/RadarChart.vue';
 import SonarChart from '@/components/SonarChart.vue';
 import EquipmentApi from '@/api/equipment';
 import { useStore } from 'vuex';
+import WebSocketHelper from '@/utils/websocket';
 
 const store = useStore();
 
@@ -50,8 +51,9 @@ onMounted(() => {
 
 const getDeviceList = async () => {
   try {
-    const data = await EquipmentApi.getDeviceList();
+    const data = await EquipmentApi.getDeviceList<any>();
     const list = data.result;
+    list.forEach(item => item.online = 0);
     console.log(list);
     const radar = list.filter((v) => v.type === 'radar');
     const sonar = list.filter((v) => v.type === 'sonar');
@@ -64,6 +66,59 @@ const getDeviceList = async () => {
   }
 };
 
+WebSocketHelper.getInstance().start();
+WebSocketHelper.getInstance().getMessage(msg => {
+  try {
+    const { messageObject, messageType } = msg;
+    const dtData = store.getters.dtList;
+    const sonarData = store.getters.sonarList;
+    switch (messageType) {
+      case 'target':
+        store.dispatch('updateRadarData', messageObject);
+        break;
+      case 'beam':
+        // bus.emit('sayHi', messageObject);
+        store.dispatch('updateSonarData', messageObject);
+        break;
+      case 'dt_alarm':
+        if (dtData.length > 0) {
+          dtData.forEach(dt => {
+            dt.type === messageObject.deviceId && (dt.status = messageObject.status);
+          })
+          store.dispatch('updateDt', [...dtData]);
+        }
+        break;
+      case 'sonar_alarm':
+        if (sonarData.length > 0) {
+          sonarData.forEach(sonar => {
+            sonar.type === messageObject.deviceId && (sonar.status = messageObject.status);
+          })
+          store.dispatch('updateSonar', [...sonarData]);
+        }
+        break;
+      case 'dt_exception':
+        if (dtData.length > 0) {
+          dtData.forEach(dt => {
+            dt.type === messageObject.deviceId && (dt.online = messageObject.status);
+          })
+          store.dispatch('updateDt', [...dtData]);
+        }
+        break;
+      case 'sonar_exception':
+        if (sonarData.length > 0) {
+          sonarData.forEach(sonar => {
+            sonar.type === messageObject.deviceId && (sonar.online = messageObject.status);
+          })
+          store.dispatch('updateSonar', [...sonarData]);
+        }
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
 </script>
 
 <style lang="scss" scoped>

@@ -14,6 +14,7 @@ import MessageApi from '@/components/MessageApi.vue';
 import { zhCN, dateZhCN } from 'naive-ui';
 import type { NLocale, NDateLocale } from 'naive-ui';
 import { ref } from 'vue';
+// import bus from '@/utils/bus';
 
 const locale = ref<NLocale>(zhCN);
 const dateLocale = ref<NDateLocale>(dateZhCN);

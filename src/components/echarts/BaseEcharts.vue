@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, ComponentInternalInstance, onMounted, onBeforeMount, onBeforeUnmount, nextTick, watchEffect, watch} from "vue";
+import { defineComponent, getCurrentInstance, ComponentInternalInstance, onMounted, onBeforeMount, onBeforeUnmount, nextTick, watchEffect, watch } from "vue";
 //引入echarts
 import * as echarts from "echarts";
 export default defineComponent({
@@ -31,10 +31,10 @@ export default defineComponent({
     const initCharts = () => {
       const myChart = echarts.init(proxy?.$refs.chartRef as HTMLElement, '', { renderer: 'canvas' });
       // watchEffect(()=>{
+      myChart.setOption(props.options);
+      watch(() => props.flag, () => {
         myChart.setOption(props.options);
-        watch(() => props.flag, () => {
-          myChart.setOption(props.options);
-        })
+      })
       // })
     };
     onMounted(() => {
@@ -47,4 +47,5 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

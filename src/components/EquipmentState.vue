@@ -20,23 +20,25 @@ import { useStore } from 'vuex'
 
 const store = useStore();
 const radarList = computed(() => store.getters.radarList);
+const sonarList = computed(() => store.getters.sonarList);
+const dtList = computed(() => store.getters.dtList);
 let time = reactive({
   value: []
 });
 let showCModal = ref(false)
 provide('showCModal', showCModal)
 provide('header', {
-	title: '设备异常日志',
-	iconClass: 'touxiang'
+  title: '设备异常日志',
+  iconClass: 'touxiang'
 })
 
 provide('close', () => {
-	showCModal.value = false;
+  showCModal.value = false;
 })
 
 provide('updateTime', (v, f) => {
   time.value = v;
-	console.log('更新数据',v, f);
+  console.log('更新数据', v, f);
 })
 
 const style = {
@@ -44,7 +46,7 @@ const style = {
   height: "220px",
   marginTop: "20px",
 };
-const equipments = computed(() =>[
+const equipments = computed(() => [
   {
     name: '雷达',
     icon: 'subtract',
@@ -54,20 +56,20 @@ const equipments = computed(() =>[
   {
     name: '地听器',
     icon: 'frame',
-    num: radarList.value.length,
+    num: dtList.value.length,
     state: '全部在线'
   },
   {
     name: '声纳',
     icon: 'vector',
-    num: radarList.value.length,
+    num: sonarList.value.length,
     state: '全部在线'
   }
 ])
 
-const RTHandle = () => {  
-	// 查看更多
-	showCModal.value = true;
+const RTHandle = () => {
+  // 查看更多
+  showCModal.value = true;
 }
 </script>
 <style lang="scss" scoped>

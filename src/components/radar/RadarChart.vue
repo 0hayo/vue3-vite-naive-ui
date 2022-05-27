@@ -6,34 +6,30 @@
   </BoxSolt>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted } from "vue";
+<script lang="ts" setup>
+import { computed, onMounted, watch } from "vue";
 import BoxSolt from "@/components/BoxSolt.vue";
 import createRadar from './radar';
-export default defineComponent({
-  name: "LineChart",
-  components: {
-    BoxSolt,
-  },
-  setup() {
-    const style = {
-      width: "400px",
-      height: "365px",
-      marginTop: "20px"
-    };
-    onMounted(() => {
-      const radar = createRadar('radar');
-      if(radar) radar.scan();
-      setTimeout(() => {
-        radar.removePoints();
-        radar.addPoints(120, 120);
-      }, 2000);
+import { useStore } from 'vuex';
+
+const store = useStore();
+const style = {
+  width: "400px",
+  height: "365px",
+  marginTop: "20px"
+};
+onMounted(() => {
+  const radar = createRadar('radar');
+  if (radar) radar.scan();
+  const radarData = computed(() => store.getters.radarData);
+  watch(radarData, (data: Array<any>) => {
+    radar.removePoints();
+    radarData.value.forEach(item => {
+      radar.addPoints(item.point.x + 190, item.point.y + 156);
     })
-    return {
-      style
-    };
-  },
-});
+  });
+})
+
 </script>
 <style lang="scss" scoped>
 .radar-box {
@@ -44,6 +40,7 @@ export default defineComponent({
   justify-content: center;
   margin-top: 10px;
 }
+
 .radar {
   // height: 100%;
   // background-color: #fff;

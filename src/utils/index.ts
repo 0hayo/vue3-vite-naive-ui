@@ -74,6 +74,6 @@ export const launchFullscreen = () => {
   }
 }
 
-function isFullscreen() {
+export function isFullscreen() {
   return document.fullscreenElement !== null
 }

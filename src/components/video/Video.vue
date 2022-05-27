@@ -1,12 +1,20 @@
 <template>
   <div class="video-box">
-    <input type="button" class="btn top" value="👆" @mousedown="mouseDownPTZControl(1)" @mouseup="mouseUpPTZControl()" />
+    <button class="btn top" @mousedown="mouseDownPTZControl(1)" @mouseup="mouseUpPTZControl()">
+      <svg-icon iconClass="arrow-up" />
+    </button>
     <div class="lvr">
-      <input type="button" class="btn" value="👈" @mousedown="mouseDownPTZControl(3)" @mouseup="mouseUpPTZControl()" />
+      <button class="btn" @mousedown="mouseDownPTZControl(3)" @mouseup="mouseUpPTZControl()">
+        <svg-icon iconClass="arrow-left" />
+      </button>
       <div id="divPlugin" class="plugin"></div>
-      <input type="button" class="btn" value="👉" @mousedown="mouseDownPTZControl(4)" @mouseup="mouseUpPTZControl()" />
+      <button class="btn" @mousedown="mouseDownPTZControl(4)" @mouseup="mouseUpPTZControl()">
+        <svg-icon iconClass="arrow-right" />
+      </button>
     </div>
-    <input type="button" class="btn bottom" value="👇" @mousedown="mouseDownPTZControl(2)" @mouseup="mouseUpPTZControl()" />
+    <button class="btn bottom" @mousedown="mouseDownPTZControl(2)" @mouseup="mouseUpPTZControl()">
+      <svg-icon iconClass="arrow-down" />
+    </button>
     <div class="tb">
       <input type="button" class="btn" value="+" @mousedown="mouseDownPTZControl(10)" @mouseup="mouseUpPTZControl()" />
       <input type="button" class="btn" value="-" @mousedown="mouseDownPTZControl(11)" @mouseup="mouseUpPTZControl()" />
@@ -250,20 +258,27 @@ function mouseUpPTZControl() {
     position: absolute;
     top: 0;
     right: 0;
+
+    input {
+      padding: 2px 0;
+    }
   }
 
   .btn {
     outline: none;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     color: aliceblue;
     width: 30px;
     padding: 0;
     border: 0;
+
     &:active {
-      box-shadow: 0 0 5px rgba(0,0,0,0.5) ;
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     }
   }
-  .bottom, .top {
+
+  .bottom,
+  .top {
     width: calc(100% - 60px);
     height: 30px;
   }
