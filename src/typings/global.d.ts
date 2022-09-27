@@ -46,3 +46,10 @@ export interface StatisticsChart {
   type: string
   data: Array<number>
 }
+
+export interface EqLogsParams {
+  pageNum: number
+  pageSize: number
+  beginDate?: string
+  endDate?: string
+}

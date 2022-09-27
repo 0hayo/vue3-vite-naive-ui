@@ -1,6 +1,6 @@
 import Config from './Config';
 import axios, { AxiosRequestConfig } from 'axios';
-import { getToken, notify } from '.';
+import { getToken } from '.';
 
 const service = axios.create({
   baseURL: Config.getAxiosUrl(),
@@ -27,7 +27,7 @@ service.interceptors.response.use(
   response => {
     const data = response.data;
     if (data.code !== 200) {
-      notify('warning', data.code, data.msg);
+      // notify('warning', data.code, data.msg);
     } else {
       return data;
     }

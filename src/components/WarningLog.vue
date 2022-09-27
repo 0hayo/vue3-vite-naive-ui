@@ -11,6 +11,7 @@ import { TableProps } from 'naive-ui'
 import { h, onMounted, provide, reactive, ref, watch } from 'vue';
 import EquipmentApi from '@/api/equipment';
 import { WarningObj, ResultList } from '@/typings/global'
+import { eqType } from '@/utils';
 
 type TableThemeOverrides = NonNullable<TableProps['themeOverrides']>
 const tableThemeOverrides: TableThemeOverrides = {
@@ -57,6 +58,11 @@ const columns = [
   {
     title: '报警设备',
     key: 'deviceId',
+    render(row) {
+      const text = eqType[row.type];
+      const i = row.deviceId.split(row.type)[1];
+      return h('span', `「${text}」${i}号设备`)
+    }
   },
   // {
   //   title: '操作',

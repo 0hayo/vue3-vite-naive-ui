@@ -11,7 +11,7 @@ class WebSocketHelper {
   private readonly reconnectMaxNum: number = 10;
   private url: string = null!;
 
-  public constructor(url: string = 'ws:192.168.1.155/admin/websocket') {
+  public constructor(url: string = 'ws:192.168.1.193/admin/websocket') {
     this.url = url;
     // this.start();
   };

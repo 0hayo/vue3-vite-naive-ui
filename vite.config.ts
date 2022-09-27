@@ -39,13 +39,13 @@ export default defineConfig({
     //反向代理配置，注意rewrite写法，开始没看文档在这里踩了坑
     proxy: { // 代理配置
       '/admin/api': {
-        target: 'http://192.168.1.155', //代理接口
+        target: 'http://192.168.1.193', //代理接口
         ws: true,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
-    host: '192.168.1.123',
+    host: '192.168.1.126',
     port: 80
   },
 });

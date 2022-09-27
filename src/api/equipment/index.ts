@@ -1,5 +1,5 @@
 import axiosInstance from "@/plugins/axios"
-import { AlarmLogsParams, Result, StatisticsParams } from '@/typings/global'
+import { AlarmLogsParams, Result, StatisticsParams, EqLogsParams } from '@/typings/global'
 
 
 export default class EquipmentApi {
@@ -15,6 +15,12 @@ export default class EquipmentApi {
 
   public static statistics<T>(params: StatisticsParams): Promise<Result<T>> {
     return axiosInstance.get('/statistics/trendAlarmLog', {
+      params
+    })
+  }
+
+  public static exceptionLogs<T>(params: EqLogsParams): Promise<Result<T>> {
+    return axiosInstance.get('/statistics/exceptionLogs', {
       params
     })
   }

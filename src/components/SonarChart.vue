@@ -3,7 +3,8 @@
     <BoxSolt :style="style" title="声纳定向瀑布图" titleIcon="light">
       <BaseEcharts :options="options" :flag="flag" width="100%" height="100%"></BaseEcharts>
     </BoxSolt>
-    <n-select class="select" v-model:value="sonarI" size="small" :options="sonarOptions" />
+    <n-select class="select" v-model:value="sonarI" size="small" :options="sonarOptions"
+      :theme-overrides="selectThemeOverrides" />
   </div>
 </template>
 
@@ -12,7 +13,28 @@ import { computed, onMounted, reactive, ref, watch } from "vue";
 import BoxSolt from "@/components/BoxSolt.vue";
 import BaseEcharts from '@/components/echarts/BaseEcharts.vue';
 import { useStore } from 'vuex';
-import bus from '@/utils/bus'
+// import bus from '@/utils/bus'
+import { SelectProps } from 'naive-ui'
+type SelectThemeOverrides = NonNullable<SelectProps['themeOverrides']>
+const selectThemeOverrides: SelectThemeOverrides = {
+  menuBoxShadow:
+    '0 6px 16px -9px rgba(0, 0, 0, .08), 0 9px 28px 0 rgba(0, 0, 0, .05), 0 12px 48px 16px rgba(0, 0, 0, .03)',
+  peers: {
+    InternalSelection: {
+      textColor: '#fff',
+      heightMedium: '42px',
+      color: 'rgba(18, 32, 51, 0)',
+      colorActive: 'rgba(18, 32, 51, 0.6)',
+      border: 'rgba(18, 32, 51, 0.6)',
+    },
+    InternalSelectMenu: {
+      color: 'rgba(0, 0, 0, 0.4)',
+      optionTextColor: '#fff',
+    }
+  },
+}
+
+
 
 const store = useStore();
 
@@ -301,7 +323,7 @@ const updateChart = () => {
 }
 
 .select {
-  width: 100px;
+  width: 110px;
   position: absolute;
   top: 10px;
   right: 10px;

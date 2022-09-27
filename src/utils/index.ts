@@ -25,8 +25,8 @@ export enum TimeType {
   all = 'all'
 }
 
-export const FormatDate = (time: number | Date, type: string = TimeType.yyyy_mm_dd) => {
-  if (!time) return;
+export const FormatDate = (time: number | Date, type: string = TimeType.yyyy_mm_dd): string => {
+  if (!time) return '';
   if (typeof time === 'number') {
     time = new Date(time);
   }
@@ -76,4 +76,11 @@ export const launchFullscreen = () => {
 
 export function isFullscreen() {
   return document.fullscreenElement !== null
+}
+
+
+export const eqType = {
+  radar: '雷达',
+  sonar: '雷达',
+  dt: '雷达'
 }

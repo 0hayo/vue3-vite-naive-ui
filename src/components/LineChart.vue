@@ -13,6 +13,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { FormatDate, TimeType } from '@/utils';
 
 onMounted(() => {
+  getDateArr();
   getWarningLog();
 })
 
@@ -32,7 +33,7 @@ const options: any = {
   },
   xAxis: {
     type: "category",
-    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    data: [],
   },
   yAxis: {
     type: "value",
@@ -79,7 +80,13 @@ const getWarningLog = async () => {
     console.log(error);
   }
 };
-const timeArr = () => {
-  const date = FormatDate(new Date, TimeType.yyyy_mm_dd)
+const getDateArr = () => {
+  const dateArr: Array<string> = [];
+  const date = new Date();
+  for (let i = 0; i < 7; i++) {
+    const date1 = FormatDate(date.getTime() - i * 24 * 60 * 60 * 1000, TimeType.yyyy_mm_dd);
+    dateArr.push(date1)
+  }
+  options.xAxis.data = dateArr;
 }
 </script>

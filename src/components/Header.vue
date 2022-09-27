@@ -12,7 +12,7 @@
     <div class="user-control">
       <svg-icon iconClass="touxiang" className="touxiang" />
       <div>
-        <p class="name">{{ userInfo.nickname }}</p>
+        <p class="name">{{ userInfo && userInfo.nickname }}</p>
         <p class="no">编号：000001</p>
       </div>
       <div class="min-close">
